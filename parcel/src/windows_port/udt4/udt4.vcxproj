@@ -106,10 +106,11 @@ copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib
 </Command>
     </PostBuildEvent>
     <CustomBuildStep>
-      <Command>copy udt.h udt</Command>
+      <Command>
+      </Command>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Inputs>udt;%(Inputs)</Inputs>
+      <Inputs>%(Inputs)</Inputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -137,10 +138,11 @@ copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib
 </Command>
     </PostBuildEvent>
     <CustomBuildStep>
-      <Command>copy udt.h udt</Command>
+      <Command>
+      </Command>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Inputs>udt;%(Inputs)</Inputs>
+      <Inputs>%(Inputs)</Inputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -172,10 +174,11 @@ copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib
 </Command>
     </PostBuildEvent>
     <CustomBuildStep>
-      <Command>copy udt.h udt</Command>
+      <Command>
+      </Command>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Inputs>udt;%(Inputs)</Inputs>
+      <Inputs>%(Inputs)</Inputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -207,10 +210,11 @@ copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib
 </Command>
     </PostBuildEvent>
     <CustomBuildStep>
-      <Command>copy udt.h udt</Command>
+      <Command>
+      </Command>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Inputs>udt;%(Inputs)</Inputs>
+      <Inputs>%(Inputs)</Inputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
