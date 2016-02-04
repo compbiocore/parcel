@@ -97,14 +97,20 @@
     </Link>
     <PostBuildEvent>
       <Command>REM Copy the DLL to a \bin directory one up from the solution.
-if not exist "$(SolutionDir)..\$(Platform)\bin\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
-copy "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\$(TargetFileName)"
+if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
+copy /y "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\$(TargetFileName)"
 REM Copy the LIB to a \lib directory one up from the solution.
-if not exist "$(SolutionDir)..\$(Platform)\lib\$(Configuration)" mkdir "$(SolutionDir)..\lib\$(Platform)\$(Configuration)"
-copy "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\$(TargetName).lib"
+if not exist "$(SolutionDir)..\lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\lib\$(Platform)\$(Configuration)"
+copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\$(TargetName).lib"
 
 </Command>
     </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>copy udt.h udt</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Inputs>udt;%(Inputs)</Inputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -122,14 +128,20 @@ copy "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(
     </Link>
     <PostBuildEvent>
       <Command>REM Copy the DLL to a \bin directory one up from the solution.
-if not exist "$(SolutionDir)..\$(Platform)\bin\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
-copy "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\$(TargetFileName)"
+if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
+copy /y "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\$(TargetFileName)"
 REM Copy the LIB to a \lib directory one up from the solution.
-if not exist "$(SolutionDir)..\$(Platform)\lib\$(Configuration)" mkdir "$(SolutionDir)..\lib\$(Platform)\$(Configuration)"
-copy "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\$(TargetName).lib"
+if not exist "$(SolutionDir)..\lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\lib\$(Platform)\$(Configuration)"
+copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\$(TargetName).lib"
 
 </Command>
     </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>copy udt.h udt</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Inputs>udt;%(Inputs)</Inputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -151,14 +163,20 @@ copy "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(
     </Link>
     <PostBuildEvent>
       <Command>REM Copy the DLL to a \bin directory one up from the solution.
-if not exist "$(SolutionDir)..\$(Platform)\bin\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
-copy "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\$(TargetFileName)"
+if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
+copy /y "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\$(TargetFileName)"
 REM Copy the LIB to a \lib directory one up from the solution.
-if not exist "$(SolutionDir)..\$(Platform)\lib\$(Configuration)" mkdir "$(SolutionDir)..\lib\$(Platform)\$(Configuration)"
-copy "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\$(TargetName).lib"
+if not exist "$(SolutionDir)..\lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\lib\$(Platform)\$(Configuration)"
+copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\$(TargetName).lib"
 
 </Command>
     </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>copy udt.h udt</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Inputs>udt;%(Inputs)</Inputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -180,16 +198,35 @@ copy "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(
     </Link>
     <PostBuildEvent>
       <Command>REM Copy the DLL to a \bin directory one up from the solution.
-if not exist "$(SolutionDir)..\$(Platform)\bin\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
-copy "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\$(TargetFileName)"
+if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
+copy /y "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\$(TargetFileName)"
 REM Copy the LIB to a \lib directory one up from the solution.
-if not exist "$(SolutionDir)..\$(Platform)\lib\$(Configuration)" mkdir "$(SolutionDir)..\lib\$(Platform)\$(Configuration)"
-copy "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\$(TargetName).lib"
+if not exist "$(SolutionDir)..\lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\lib\$(Platform)\$(Configuration)"
+copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\$(TargetName).lib"
 
 </Command>
     </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>copy udt.h udt</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Inputs>udt;%(Inputs)</Inputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\udt4\src\api.h" />
+    <ClInclude Include="..\..\udt4\src\buffer.h" />
+    <ClInclude Include="..\..\udt4\src\cache.h" />
+    <ClInclude Include="..\..\udt4\src\ccc.h" />
+    <ClInclude Include="..\..\udt4\src\channel.h" />
+    <ClInclude Include="..\..\udt4\src\common.h" />
+    <ClInclude Include="..\..\udt4\src\core.h" />
+    <ClInclude Include="..\..\udt4\src\epoll.h" />
+    <ClInclude Include="..\..\udt4\src\list.h" />
+    <ClInclude Include="..\..\udt4\src\md5.h" />
+    <ClInclude Include="..\..\udt4\src\packet.h" />
+    <ClInclude Include="..\..\udt4\src\queue.h" />
+    <ClInclude Include="..\..\udt4\src\udt.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
