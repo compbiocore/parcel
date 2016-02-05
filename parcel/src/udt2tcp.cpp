@@ -26,6 +26,9 @@
 
 #include "parcel.h"
 
+#if defined(WIN32)
+#include "winport.h"
+#endif
 
 EXTERN int udt2tcp_start(char *local_host, char *local_port,
                          char *remote_host, char *remote_port)
@@ -129,8 +132,14 @@ EXTERN int udt2tcp_start_configurable(char *local_host,
     log("Creating pipe2tcp server thread");
     pthread_t udt2tcp_server_thread;
     server_args_t *args = (server_args_t*) malloc(sizeof(server_args_t));
+
+#if defined(WIN32)
+    args->remote_host = _strdup (remote_host);
+    args->remote_port = _strdup (remote_port);
+#else
     args->remote_host = strdup(remote_host);
     args->remote_port = strdup(remote_port);
+#endif
     args->udt_socket  = udt_socket;
     if (pthread_create(&udt2tcp_server_thread, NULL, udt2tcp_accept_clients, args)){
         error("unable to create udt2tcp server thread");
@@ -279,12 +288,20 @@ void *thread_udt2tcp(void *_args_)
     }
 
     /* Create udt2tcp pipe, read from 0, write to 1 */
+#if !defined(WIN32)
+
+    //
+    // Note: This code seems dead since the pipes aren't actually used!
+    // The circular buffer is used between the threads instead!
+    //
+
     int pipefd[2];
     if (pipe(pipefd) == -1) {
         perror("pipe");
         free(args);
         return NULL;
     }
+#endif
 
     /*******************************************************************
      * Begin proxy procedure

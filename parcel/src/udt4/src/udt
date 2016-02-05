@@ -245,10 +245,31 @@ private:
 
    int m_iMinor;		// for specific error reasons
    int m_iErrno;		// errno returned by the system if there is any
+
+   //
+   // WINDOWS NOTE:  These three statements generate a C4251 warning on windows.
+   // This warning suggests that template classes exported from a DLL may
+   // be suspect.  We can ignore these warnings for STL classes.
+   // (see: https://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k(C4251)&rd=true)
+   //
+
+#if defined(_WIN32)
+#pragma warning(disable: 4251)
+#endif
+
    std::string m_strMsg;	// text error message
 
    std::string m_strAPI;	// the name of UDT function that returns the error
    std::string m_strDebug;	// debug information, set to the original place that causes the error
+
+#if defined(_WIN32)
+   //
+   // Reenable the warning for the remainder of the code.
+   //
+
+#pragma warning(default: 4251)
+#endif
+
 
 public: // Error Code
    static const int SUCCESS;

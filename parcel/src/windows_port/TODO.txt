@@ -1,0 +1,10 @@
+
+Parcel Project
+
+Replace Circular Buffer with native pipes -- higher performance and simpler code.
+
+Use a semaphore for waiting on the thread, not usleep().
+
+WIN64 port!
+
+

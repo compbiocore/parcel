@@ -26,11 +26,26 @@
 #define __PARCEL_H__
 
 /* Standard libraries */
-#include <unistd.h>
+
+#ifndef WIN32
+    #include <unistd.h>
+#endif
+
 #include <cstdlib>
 #include <cstring>
-#include <netdb.h>
-#include <sys/socket.h>
+
+
+#ifndef WIN32
+    #include <netdb.h>
+    #include <sys/socket.h>
+#else
+    #include <winsock2.h>
+    #include <ws2tcpip.h>
+    #ifdef LEGACY_WIN32
+        #include <wspiapi.h>
+    #endif
+#endif
+
 #include <iostream>
 #include <assert.h>
 #include <signal.h>
@@ -38,6 +53,7 @@
 /* Non standard libraries */
 #include <udt>
 #include "cbuffer.h"
+
 
 /******************************************************************************/
 #if __APPLE__

@@ -7,9 +7,21 @@
 #ifndef __CBUFFER_H__
 #define __CBUFFER_H__
 
-#include <unistd.h>
+#ifndef WIN32
+    #include <unistd.h>
+#else
+    #include <windows.h>
+#endif
+
 #include <cstdlib>
+
+//
+// Suppress redefinition of timespec in pthread.h -- it is defined in windows.h.
+//
+
+#define HAVE_STRUCT_TIMESPEC
 #include <pthread.h>
+
 #include <cstring>
 #include <cstdio>
 #include <algorithm>

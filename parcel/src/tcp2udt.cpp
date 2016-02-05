@@ -26,6 +26,10 @@
 
 #include "parcel.h"
 
+#if defined(WIN32)
+#include "winport.h"
+#endif
+
 
 EXTERN int tcp2udt_start(char *local_host, char *local_port,
                          char *remote_host, char *remote_port)
@@ -101,7 +105,11 @@ EXTERN int tcp2udt_start_configurable(char *local_host,
         perror("Unable to create TCP socket");
         return -1;
     }
+#ifndef WIN32
     setsockopt(tcp_socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(int));
+#else
+    setsockopt (tcp_socket, SOL_SOCKET, SO_REUSEADDR, (const char *) &reuseaddr, sizeof (int));
+#endif
 
     /* Bind the server socket */
     log("Proxy binding to TCP socket [%s:%s]", local_host, local_port);
@@ -125,8 +133,13 @@ EXTERN int tcp2udt_start_configurable(char *local_host,
     debug("Creating pipe2tcp server thread");
     pthread_t tcp2udt_server_thread;
     server_args_t *args = (server_args_t*) malloc(sizeof(server_args_t));
+#if defined(WIN32)
+    args->remote_host = _strdup (remote_host);
+    args->remote_port = _strdup (remote_port);
+#else
     args->remote_host     = strdup(remote_host);
     args->remote_port     = strdup(remote_port);
+#endif
     args->tcp_socket      = tcp_socket;
     args->mss             = mss;
     args->udt_buffer_size = udt_buffer_size;
@@ -309,6 +322,11 @@ void *thread_tcp2udt(void *_args_)
      ******************************************************************/
     CircularBuffer *cbuffer = new CircularBuffer(CIRCULAR_BUFF_SIZE);
 
+#if !defined(WIN32)
+    //
+    // This may be dead code as the circular buffer is used instead of the pipe!
+    //
+
     /* Create pipe, read from 0, write to 1 */
     int pipefd[2];
     if (pipe(pipefd) == -1) {
@@ -316,6 +334,7 @@ void *thread_tcp2udt(void *_args_)
         free(args);
         return NULL;
     }
+#endif
 
     /* Create UDT to pipe thread */
     pthread_t tcp2pipe_thread;

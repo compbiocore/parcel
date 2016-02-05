@@ -24,6 +24,9 @@
  ******************************************************************************/
 #include "parcel.h"
 
+#if defined(WIN32)
+#include "winport.h"
+#endif
 
 void *udt2pipe(void *_args_)
 {
