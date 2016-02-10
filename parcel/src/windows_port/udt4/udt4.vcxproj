@@ -104,6 +104,7 @@ if not exist "$(SolutionDir)..\lib\$(Platform)\$(Configuration)" mkdir "$(Soluti
 copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\$(TargetName).lib"
 
 </Command>
+      <Message>Copy udt4 libraries and binaries.</Message>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>
@@ -136,6 +137,7 @@ if not exist "$(SolutionDir)..\lib\$(Platform)\$(Configuration)" mkdir "$(Soluti
 copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\$(TargetName).lib"
 
 </Command>
+      <Message>Copy udt4 libraries and binaries.</Message>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>
@@ -172,6 +174,7 @@ if not exist "$(SolutionDir)..\lib\$(Platform)\$(Configuration)" mkdir "$(Soluti
 copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\$(TargetName).lib"
 
 </Command>
+      <Message>Copy udt4 libraries and binaries.</Message>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>
@@ -208,6 +211,7 @@ if not exist "$(SolutionDir)..\lib\$(Platform)\$(Configuration)" mkdir "$(Soluti
 copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\$(TargetName).lib"
 
 </Command>
+      <Message>Copy udt4 libraries and binaries.</Message>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>

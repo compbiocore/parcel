@@ -130,6 +130,7 @@ EXTERN int udt2tcp_start_configurable(char *local_host,
     }
 
     log("Creating pipe2tcp server thread");
+
     pthread_t udt2tcp_server_thread;
     server_args_t *args = (server_args_t*) malloc(sizeof(server_args_t));
 

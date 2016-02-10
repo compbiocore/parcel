@@ -65,8 +65,19 @@
  *  This 64MiB buffer size is (1) recommended (2) empirically verified
  *  to have given the best performance
  */
+
+#ifndef WIN32
 #define BUFF_SIZE 67108864
 #define MSS 8400
+#else
+
+//
+// For testing, use smaller buffer on 32 bit Windows.
+//
+
+#define BUFF_SIZE 1048567
+#define MSS 8400
+#endif
 #endif
 
 #define CIRCULAR_BUFF_SIZE 4*BUFF_SIZE
