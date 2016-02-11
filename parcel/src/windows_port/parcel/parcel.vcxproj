@@ -103,16 +103,19 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;udt4.lib;pthreadVCE2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;udt4.lib;pthreadVCE2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>parcel.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
       <Command>REM Copy the DLL to a \bin directory one up from the solution.
 if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
-copy /y "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\$(TargetFileName)"
+copy /y "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
+REM Copy the PDB to a \bin directory one up from the solution.
+if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
+copy /y "$(SolutionDir)$(Configuration)\$(TargetName).pdb" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\
 REM Copy the LIB to a \lib directory one up from the solution.
 if not exist "$(SolutionDir)..\lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\lib\$(Platform)\$(Configuration)"
-copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\$(TargetName).lib"
+copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\"
 
 
 
@@ -179,10 +182,10 @@ copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib
     <PostBuildEvent>
       <Command>REM Copy the DLL to a \bin directory one up from the solution.
 if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
-copy /y "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\$(TargetFileName)"
+copy /y "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
 REM Copy the LIB to a \lib directory one up from the solution.
 if not exist "$(SolutionDir)..\lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\lib\$(Platform)\$(Configuration)"
-copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\$(TargetName).lib"
+copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\"
 
 
 
