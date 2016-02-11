@@ -42,7 +42,7 @@ written by
 #define __UDT_H__
 
 
-#ifndef WIN32
+#if !defined(WIN32) && !defined(_WINDOWS)
    #include <sys/types.h>
    #include <sys/socket.h>
    #include <netinet/in.h>

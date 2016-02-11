@@ -27,7 +27,7 @@
 
 /* Standard libraries */
 
-#ifndef WIN32
+#if !defined(WIN32) && !defined(_WINDOWS)
     #include <unistd.h>
 #endif
 
@@ -35,7 +35,7 @@
 #include <cstring>
 
 
-#ifndef WIN32
+#if !defined(WIN32) && !defined(_WINDOWS)
     #include <netdb.h>
     #include <sys/socket.h>
 #else
@@ -66,17 +66,22 @@
  *  to have given the best performance
  */
 
-#ifndef WIN32
+#if !defined(WIN32) && !defined(_WINDOWS)
 #define BUFF_SIZE 67108864
 #define MSS 8400
 #else
 
+#if defined(_WINDOWS)
+#define BUFF_SIZE 67108864
+#define MSS 8400
+#else
 //
 // For testing, use smaller buffer on 32 bit Windows.
 //
 
 #define BUFF_SIZE 1048567
 #define MSS 8400
+#endif
 #endif
 #endif
 
@@ -95,7 +100,7 @@ using namespace std;
  ******************************************************************************/
 typedef struct server_args_t {
     UDTSOCKET udt_socket;
-    int tcp_socket;
+    SOCKET tcp_socket;
     char *remote_host;
     char *remote_port;
     int mss;
@@ -105,7 +110,7 @@ typedef struct server_args_t {
 
 typedef struct transcriber_args_t {
     UDTSOCKET udt_socket;
-    int tcp_socket;
+    SOCKET tcp_socket;
     char *remote_host;
     char *remote_port;
     int mss;
@@ -119,7 +124,7 @@ typedef struct udt_pipe_args_t {
 } udt_pipe_args_t;
 
 typedef struct tcp_pipe_args_t {
-    int tcp_socket;
+    SOCKET tcp_socket;
     CircularBuffer *pipe;
 } tcp_pipe_args_t;
 

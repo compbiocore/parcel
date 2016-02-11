@@ -112,7 +112,7 @@ EXTERN int udt2tcp_start_configurable(char *local_host,
     UDT::setsockopt(udt_socket, 0, UDT_REUSEADDR, &reuseaddr, sizeof(int));
 
     /* Bind the server socket */
-    if (UDT::bind(udt_socket, res->ai_addr, res->ai_addrlen) == UDT::ERROR){
+    if (UDT::bind(udt_socket, res->ai_addr, static_cast<int>(res->ai_addrlen)) == UDT::ERROR){
         error("bind: %s", UDT::getlasterror().getErrorMessage());
         return -1;
     }
@@ -216,7 +216,7 @@ int connect_remote_tcp(udt2tcp_args_t *args)
           args->remote_host, args->remote_port);
 
     struct addrinfo hints, *local, *peer;
-    int tcp_socket;
+    SOCKET tcp_socket;
 
     /* Create address information */
     memset(&hints, 0, sizeof(struct addrinfo));
@@ -238,12 +238,12 @@ int connect_remote_tcp(udt2tcp_args_t *args)
     }
 
     /* Connect to the remote tcp server */
-    if (connect(tcp_socket, peer->ai_addr, peer->ai_addrlen)){
+    if (connect(tcp_socket, peer->ai_addr, static_cast<int>(peer->ai_addrlen))){
         perror("TCP connect");
         return -1;
     }
     freeaddrinfo(peer);
-    return tcp_socket;
+    return static_cast<int>(tcp_socket);
 }
 
 void *thread_udt2tcp(void *_args_)

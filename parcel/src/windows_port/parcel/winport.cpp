@@ -35,11 +35,11 @@ void usleep (__int64 usec)
 // Returns count of bytes read or -1 on error.
 //
 
-int read (int fd, char* buffer, int buff_size)
+int read (SOCKET fd, char* buffer, int buff_size)
 {
     int iResult;
 
-    iResult = recv ((SOCKET) fd, buffer, buff_size, 0);
+    iResult = recv (fd, buffer, buff_size, 0);
 
     return iResult;
 }
@@ -50,7 +50,7 @@ int read (int fd, char* buffer, int buff_size)
 // Returns -1 on error.
 //
 
-int close (int fd)
+int close (SOCKET fd)
 {
-    return closesocket ((SOCKET) fd);
+    return closesocket (fd);
 }

@@ -42,7 +42,7 @@ written by
 #define __UDT_H__
 
 
-#ifndef WIN32
+#if !defined(WIN32) && !defined(_WINDOWS)
    #include <sys/types.h>
    #include <sys/socket.h>
    #include <netinet/in.h>
@@ -68,7 +68,7 @@ written by
 //use -D_WIN32_WINNT=0x0501
 
 
-#ifdef WIN32
+#if defined(WIN32) || defined(_WINDOWS)
    #ifndef __MINGW__
       // Explicitly define 32-bit and 64-bit numbers
       typedef __int32 int32_t;
@@ -95,7 +95,7 @@ written by
 
 #define NO_BUSY_WAITING
 
-#ifdef WIN32
+#if defined(WIN32) || defined(_WINDOWS)
    #ifndef __MINGW__
       typedef SOCKET SYSSOCKET;
    #else
@@ -253,7 +253,7 @@ private:
    // (see: https://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k(C4251)&rd=true)
    //
 
-#if defined(_WIN32)
+#if defined(_WIN32) || defined(_WINDOWS)
 #pragma warning(disable: 4251)
 #endif
 
@@ -262,7 +262,7 @@ private:
    std::string m_strAPI;	// the name of UDT function that returns the error
    std::string m_strDebug;	// debug information, set to the original place that causes the error
 
-#if defined(_WIN32)
+#if defined(_WIN32) || defined(_WINDOWS)
    //
    // Reenable the warning for the remainder of the code.
    //

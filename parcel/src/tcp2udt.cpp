@@ -26,7 +26,7 @@
 
 #include "parcel.h"
 
-#if defined(WIN32)
+#if defined(WIN32) || defined(_WINDOWS)
 #include "winport.h"
 #endif
 
@@ -80,7 +80,7 @@ EXTERN int tcp2udt_start_configurable(char *local_host,
 
     addrinfo hints;
     addrinfo* res;
-    int tcp_socket;
+    SOCKET tcp_socket;
     int reuseaddr = 1;
 
     /*******************************************************************
@@ -113,7 +113,7 @@ EXTERN int tcp2udt_start_configurable(char *local_host,
 
     /* Bind the server socket */
     log("Proxy binding to TCP socket [%s:%s]", local_host, local_port);
-    if (bind(tcp_socket, res->ai_addr, res->ai_addrlen)){
+    if (bind(tcp_socket, res->ai_addr, static_cast<int>(res->ai_addrlen))){
         perror("Unable to bind TCP socket");
         return -1;
     }
@@ -164,7 +164,7 @@ EXTERN void *tcp2udt_accept_clients(void *_args_)
     server_args_t *args = (server_args_t*) _args_;
     while (1) {
 
-        int client_socket;
+        SOCKET client_socket;
         sockaddr_storage clientaddr;
         socklen_t addrlen = sizeof(clientaddr);
 
@@ -263,7 +263,7 @@ int connect_remote_udt(transcriber_args_t *args)
 
     /* Connect to the server */
     debug("Connecting to remote UDT server");
-    if (UDT::ERROR == UDT::connect(udt_socket, peer->ai_addr, peer->ai_addrlen)){
+    if (UDT::ERROR == UDT::connect(udt_socket, peer->ai_addr, static_cast<int>(peer->ai_addrlen))){
         cerr << "connect: " << UDT::getlasterror().getErrorMessage() << endl;
         freeaddrinfo(peer);
         return -1;
