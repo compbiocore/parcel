@@ -89,6 +89,14 @@
 #define EXTERN extern "C"
 #define LOG
 
+#if !(defined(_WINDOWS) || defined(WIN32))
+/*
+ * On non-Windows machines, sockets are ints.
+ */
+
+typedef int SOCKET;
+#endif
+
 /* Uncomment this line and recompile to get verbose logging output */
 /* #define DEBUG */
 
