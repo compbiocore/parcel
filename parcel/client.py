@@ -198,6 +198,7 @@ class Client(object):
                         raise
                     else:
                         log.error("Download aborted: {}".format(str(e)))
+                        break
 
         # Divide work amongst process pool
         pool = [Process(target=download_worker) for i in range(n_procs)]
