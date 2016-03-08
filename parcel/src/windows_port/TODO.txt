@@ -1,10 +1,53 @@
 
 Parcel Project
 
+Installation!
+
 Replace Circular Buffer with native pipes -- higher performance and simpler code.
 
 Use a semaphore for waiting on the thread, not usleep().
 
-WIN64 port!
+Add version resources
+
+Configure buffer size with an option?
+
+Rebuild parcel and UDT code on Mac (after changes)
+
+PThreads - static link library?
+
+PThreads - link Windows run time libraries using debug/non-debug DLL libraries
+
+Use C++/11 Thread and concurrency standard libraries instead of native libraries
+
+
+Need to install (on Windows)
+----------------------------
+
+termcolor (python -m pip install termcolor)
+progressbar (python -m pip install progressbar)
+requests (python -m pip install requests)
+intervaltree (python -m pip install intervaltree)
+
+Visual Studio 2015 Redistributables
+
+Build batch file for demo
+
+
+To Run
+------
+
+Need to set PYTHONPATH (\projects\parcel)
+Need to set PATH (\projects\parcel\parcel\src)
+
+
+Issues:
+-------
+
+Client and Server crash -- need to debug?
+Client hangs when server crashes!
+
+Parcel (and/or UDT) leaks memory.  Eventually runs out of memory.
+
+Static link or redistribute VC 2015 runtime?
 
 

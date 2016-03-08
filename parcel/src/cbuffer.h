@@ -16,10 +16,12 @@
 #include <cstdlib>
 
 //
-// Suppress redefinition of timespec in pthread.h -- it is defined in windows.h.
+// Suppress redefinition of timespec in pthread.h -- it is defined in windows.h,
+// Link pthreads as a static library.
 //
 
 #define HAVE_STRUCT_TIMESPEC
+#define PTW32_STATIC_LIB
 #include <pthread.h>
 
 #include <cstring>
