@@ -204,10 +204,10 @@ class DownloadStream(object):
 
         # Retry on exception if we haven't exceeded max retries
         except Exception as e:
-            self.log.warn(
+            self.log.debug(
                 'Unable to download part of file: {}\n.'.format(str(e)))
             if retries > 0:
-                self.log.warn('Retrying download of this segment')
+                self.log.debug('Retrying download of this segment')
                 return self.write_segment(segment, q_complete, retries-1)
             else:
                 self.log.error('Max retries exceeded.')
@@ -215,7 +215,7 @@ class DownloadStream(object):
 
         # Check that the data is not truncated or elongated
         if written != segment.end-segment.begin:
-            self.log.warn('Segment corruption: {}'.format(
+            self.log.debug('Segment corruption: {}'.format(
                 '(non-fatal) retrying' if retries else 'max retries exceeded'))
             if retries:
                 return self.write_segment(segment, q_complete, retries-1)
