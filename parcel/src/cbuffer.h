@@ -7,7 +7,7 @@
 #ifndef __CBUFFER_H__
 #define __CBUFFER_H__
 
-#if !defined(WIN32) && !defined(_WINDOWS)
+#if !defined(_WINDOWS)
     #include <unistd.h>
 #else
     #include <windows.h>

@@ -27,7 +27,7 @@
 
 /* Standard libraries */
 
-#if !defined(WIN32) && !defined(_WINDOWS)
+#if !defined(_WINDOWS)
     #include <unistd.h>
 #endif
 
@@ -35,7 +35,7 @@
 #include <cstring>
 
 
-#if !defined(WIN32) && !defined(_WINDOWS)
+#if !defined(_WINDOWS)
     #include <netdb.h>
     #include <sys/socket.h>
 #else
@@ -61,27 +61,22 @@
 #define BUFF_SIZE 1048567
 #define MSS 8400
 #else
-/*  Otherwise attempt to use a 64MiB buffer for all other systems.
- *  This 64MiB buffer size is (1) recommended (2) empirically verified
- *  to have given the best performance
- */
-
-#if !defined(WIN32) && !defined(_WINDOWS)
-#define BUFF_SIZE 67108864
-#define MSS 8400
-#else
-
-#if defined(_WINDOWS)
-#define BUFF_SIZE 67108864
-#define MSS 8400
-#else
-//
-// For testing, use smaller buffer on 32 bit Windows.
-//
+#if defined(_WIN32) && !defined(_WIN64)
+ //
+ // There is a memory leak in the Circular Buffer code.    Use a smaller
+ // buffer size on 32 bit Windows until the bug is fixed.
+ //
 
 #define BUFF_SIZE 1048567
 #define MSS 8400
-#endif
+#else
+/*  Otherwise attempt to use a 64MiB buffer for all other systems.
+*  This 64MiB buffer size is (1) recommended (2) empirically verified
+*  to have given the best performance
+*/
+
+#define BUFF_SIZE 67108864
+#define MSS 8400
 #endif
 #endif
 
@@ -89,7 +84,7 @@
 #define EXTERN extern "C"
 #define LOG
 
-#if !(defined(_WINDOWS) || defined(WIN32))
+#if !defined(_WINDOWS)
 /*
  * On non-Windows machines, sockets are ints.
  */

@@ -84,7 +84,7 @@ m_iCount(0)
 
    m_pFirstBlock = m_pCurrBlock = m_pLastBlock = m_pBlock;
 
-   #if !defined(WIN32) && !defined(_WINDOWS)
+   #if !defined(_WINDOWS)
       pthread_mutex_init(&m_BufLock, NULL);
    #else
       m_BufLock = CreateMutex(NULL, false, NULL);
@@ -110,7 +110,7 @@ CSndBuffer::~CSndBuffer()
       delete temp;
    }
 
-   #if !defined(WIN32) && !defined(_WINDOWS)
+   #if !defined(_WINDOWS)
       pthread_mutex_destroy(&m_BufLock);
    #else
       CloseHandle(m_BufLock);

@@ -24,7 +24,7 @@
  ******************************************************************************/
 #include "parcel.h"
 
-#if defined(WIN32)
+#if defined(_WINDOWS)
 #include "winport.h"
 #endif
 
