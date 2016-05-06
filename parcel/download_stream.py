@@ -186,7 +186,6 @@ class DownloadStream(object):
                 if not chunk:
                     continue  # Empty are keep-alives.
                 offset = start + written
-                written += len(chunk)
 
                 # Write the chunk to disk, create an interval that
                 # represents the chunk, get md5 info if necessary, and
@@ -198,6 +197,8 @@ class DownloadStream(object):
                     iv_data = None
                 complete_segment = Interval(offset, offset+len(chunk), iv_data)
                 q_complete.put(complete_segment)
+
+                written += len(chunk)
 
         except KeyboardInterrupt:
             return self.log.error('Process stopped by user.')
