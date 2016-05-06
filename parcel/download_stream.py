@@ -204,6 +204,9 @@ class DownloadStream(object):
 
         # Retry on exception if we haven't exceeded max retries
         except Exception as e:
+            # TODO FIXME HACK create new segment to avoid duplicate downloads
+            segment = Interval(segment.begin+written, segment.end, None)
+
             self.log.debug(
                 'Unable to download part of file: {}\n.'.format(str(e)))
             if retries > 0:
@@ -215,6 +218,9 @@ class DownloadStream(object):
 
         # Check that the data is not truncated or elongated
         if written != segment.end-segment.begin:
+            # TODO FIXME HACK create new segment to avoid duplicate downloads
+            segment = Interval(segment.begin+written, segment.end, None)
+
             self.log.debug('Segment corruption: {}'.format(
                 '(non-fatal) retrying' if retries else 'max retries exceeded'))
             if retries:
