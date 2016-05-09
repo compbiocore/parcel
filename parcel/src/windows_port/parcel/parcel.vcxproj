@@ -104,27 +104,52 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;udt4.lib;pthreadVCE2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;udt4.lib;pthreadVC2-w32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>parcel.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
-if not exist "$(SolutionDir)..\lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\lib\$(Platform)\$(Configuration)"
+      <Command>if not exist "$(SolutionDir)bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)bin\$(Platform)\$(Configuration)"
+if not exist "$(SolutionDir)lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)lib\$(Platform)\$(Configuration)"
+if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
 
 REM
-REM Copy the DLL to a \bin directory one up from the solution.
+REM Copy the DLL to a \bin directory under the solution related to the platform and configuration.
 REM
+echo Copying $(SolutionDir)$(Configuration)\$(TargetFileName) to $(SolutionDir)bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the PDB to the same directory as the DLL.
+REM
+echo Copying $(SolutionDir)$(Configuration)\$(TargetName).pdb to $(SolutionDir)bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Configuration)\$(TargetName).pdb" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the LIB to a \lib directory under the solution related to the platform and configuration..
+REM
+echo Copying $(SolutionDir)$(Configuration)\$(TargetName).lib to $(SolutionDir)lib\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)lib\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the DLL to a \bin directory one above the solution related to the platform and configuration.
+REM
+echo Copying $(SolutionDir)$(Configuration)\$(TargetName) to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
 copy /y "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
 
 REM
-REM Copy the PDB to a \bin directory one up from the solution.
+REM Copy the PDB to the same directory as the DLL.
 REM
-copy /y "$(SolutionDir)$(Configuration)\$(TargetName).pdb" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\
+echo Copying $(SolutionDir)$(Configuration)\$(TargetName).pdb to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Configuration)\$(TargetName).pdb" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
 
 REM
-REM Copy the LIB to a \lib directory one up from the solution.
+REM Copy the Pthreads DLL and PDB to the same directory as the DLL and PDB.  They live in the solution platform and configuration
+REM directories.
 REM
-copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\"
+echo Copying $(SolutionDir)$(Configuration)\pthreadvc2-w32d.dll to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
+copy /y  "$(SolutionDir)bin\$(Platform)\$(Configuration)\pthreadvc2-w32d.dll" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
+echo Copying $(SolutionDir)$(Configuration)\pthreadvc2-w32d.pdb to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
+copy /y  "$(SolutionDir)bin\$(Platform)\$(Configuration)\pthreadvc2-w32d.pdb" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
 </Command>
     </PostBuildEvent>
     <PostBuildEvent>
@@ -145,27 +170,52 @@ copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;udt4.lib;pthreadVCE2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;udt4.lib;pthreadVC2-w64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>parcel.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
-if not exist "$(SolutionDir)..\lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\lib\$(Platform)\$(Configuration)"
+      <Command>if not exist "$(SolutionDir)bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)bin\$(Platform)\$(Configuration)"
+if not exist "$(SolutionDir)lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)lib\$(Platform)\$(Configuration)"
+if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
 
 REM
-REM Copy the DLL to a \bin directory one up from the solution.
+REM Copy the DLL to a \bin directory under the solution related to the platform and configuration.
 REM
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetFileName) to $(SolutionDir)bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetFileName)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the PDB to the same directory as the DLL.
+REM
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).pdb to $(SolutionDir)bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).pdb" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the LIB to a \lib directory under the solution related to the platform and configuration..
+REM
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).lib to $(SolutionDir)lib\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).lib" "$(SolutionDir)lib\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the DLL to a \bin directory one above the solution related to the platform and configuration.
+REM
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetName) to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
 copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
 
 REM
-REM Copy the PDB to a \bin directory one up from the solution.
+REM Copy the PDB to the same directory as the DLL.
 REM
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).pdb to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
 copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).pdb" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
 
 REM
-REM Copy the LIB to a \lib directory one up from the solution.
+REM Copy the Pthreads DLL and PDB to the same directory as the DLL and PDB.  They live in the solution platform and configuration
+REM directories.
 REM
-copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\"
+echo Copying $(SolutionDir)bin\$(Platform)\$(Configuration)\pthreadvc2-w64d.dll to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
+copy /y  "$(SolutionDir)bin\$(Platform)\$(Configuration)\pthreadvc2-w64d.dll" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
+echo Copying $(SolutionDir)bin\$(Platform)\$(Configuration)\pthreadvc2-w64d.pdb to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
+copy /y  "$(SolutionDir)bin\$(Platform)\$(Configuration)\pthreadvc2-w64d.pdb" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
 </Command>
     </PostBuildEvent>
     <PostBuildEvent>
@@ -190,22 +240,52 @@ copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).lib" "$(Soluti
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;udt4.lib;pthreadVCE2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;udt4.lib;pthreadVC2-w32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>parcel.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
-if not exist "$(SolutionDir)..\lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\lib\$(Platform)\$(Configuration)"
+      <Command>if not exist "$(SolutionDir)bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)bin\$(Platform)\$(Configuration)"
+if not exist "$(SolutionDir)lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)lib\$(Platform)\$(Configuration)"
+if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
 
 REM
-REM Copy the DLL to a \bin directory one up from the solution.
+REM Copy the DLL to a \bin directory under the solution related to the platform and configuration.
 REM
+echo Copying $(SolutionDir)$(Configuration)\$(TargetFileName) to $(SolutionDir)bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the PDB to the same directory as the DLL.
+REM
+echo Copying $(SolutionDir)$(Configuration)\$(TargetName).pdb to $(SolutionDir)bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Configuration)\$(TargetName).pdb" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the LIB to a \lib directory under the solution related to the platform and configuration..
+REM
+echo Copying $(SolutionDir)$(Configuration)\$(TargetName).lib to $(SolutionDir)lib\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)lib\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the DLL to a \bin directory one above the solution related to the platform and configuration.
+REM
+echo Copying $(SolutionDir)$(Configuration)\$(TargetName) to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
 copy /y "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
 
 REM
-REM Copy the LIB to a \lib directory one up from the solution.
+REM Copy the PDB to the same directory as the DLL.
 REM
-copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\"
+echo Copying $(SolutionDir)$(Configuration)\$(TargetName).pdb to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Configuration)\$(TargetName).pdb" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the Pthreads DLL and PDB to the same directory as the DLL and PDB.  They live in the solution platform and configuration
+REM directories.
+REM
+echo Copying $(SolutionDir)$(Configuration)\pthreadvc2-w32.dll to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
+copy /y  "$(SolutionDir)bin\$(Platform)\$(Configuration)\pthreadvc2-w32.dll" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
+echo Copying $(SolutionDir)$(Configuration)\pthreadvc2-w32.pdb to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
+copy /y  "$(SolutionDir)bin\$(Platform)\$(Configuration)\pthreadvc2-w32.pdb" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
 </Command>
     </PostBuildEvent>
     <PostBuildEvent>
@@ -230,25 +310,52 @@ copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;udt4.lib;pthreadVCE2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;udt4.lib;pthreadVC2-w64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>parcel.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
-if not exist "$(SolutionDir)..\lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\lib\$(Platform)\$(Configuration)"
+      <Command>if not exist "$(SolutionDir)bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)bin\$(Platform)\$(Configuration)"
+if not exist "$(SolutionDir)lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)lib\$(Platform)\$(Configuration)"
+if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
 
 REM
-REM Copy the DLL to a \bin directory one up from the solution.
+REM Copy the DLL to a \bin directory under the solution related to the platform and configuration.
 REM
-copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\$(TargetFileName)"
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetFileName) to $(SolutionDir)bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetFileName)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"
 
 REM
-REM Copy the LIB to a \lib directory one up from the solution.
+REM Copy the PDB to the same directory as the DLL.
 REM
-copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\$(TargetName).lib"
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).pdb to $(SolutionDir)bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).pdb" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"
 
+REM
+REM Copy the LIB to a \lib directory under the solution related to the platform and configuration..
+REM
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).lib to $(SolutionDir)lib\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).lib" "$(SolutionDir)lib\$(Platform)\$(Configuration)\"
 
+REM
+REM Copy the DLL to a \bin directory one above the solution related to the platform and configuration.
+REM
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetName) to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
 
+REM
+REM Copy the PDB to the same directory as the DLL.
+REM
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).pdb to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).pdb" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the Pthreads DLL and PDB to the same directory as the DLL and PDB.  They live in the solution platform and configuration
+REM directories.
+REM
+echo Copying $(SolutionDir)bin\$(Platform)\$(Configuration)\pthreadvc2-w64.dll to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
+copy /y  "$(SolutionDir)bin\$(Platform)\$(Configuration)\pthreadvc2-w64.dll" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
+echo Copying $(SolutionDir)bin\$(Platform)\$(Configuration)\pthreadvc2-w64.pdb to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
+copy /y  "$(SolutionDir)bin\$(Platform)\$(Configuration)\pthreadvc2-w64.pdb" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
 </Command>
     </PostBuildEvent>
     <PostBuildEvent>

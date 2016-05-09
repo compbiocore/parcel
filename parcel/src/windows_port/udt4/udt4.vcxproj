@@ -96,23 +96,39 @@
       <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
-if not exist "$(SolutionDir)..\lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\lib\$(Platform)\$(Configuration)"
+      <Command>if not exist "$(SolutionDir)bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)bin\$(Platform)\$(Configuration)"
+if not exist "$(SolutionDir)lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)lib\$(Platform)\$(Configuration)"
+if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
 
 REM
-REM Copy the DLL to a \bin directory one up from the solution.
+REM Copy the DLL to a \bin directory under the solution related to the platform and configuration.
 REM
+echo Copying $(SolutionDir)$(Configuration)\$(TargetFileName) to $(SolutionDir)bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the PDB to the same directory as the DLL.
+REM
+echo Copying $(SolutionDir)$(Configuration)\$(TargetName).pdb to $(SolutionDir)bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Configuration)\$(TargetName).pdb" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the LIB to a \lib directory under the solution related to the platform and configuration..
+REM
+echo Copying $(SolutionDir)$(Configuration)\$(TargetName).lib to $(SolutionDir)lib\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)lib\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the DLL to a \bin directory one above the solution related to the platform and configuration.
+REM
+echo Copying $(SolutionDir)$(Configuration)\$(TargetFileName) to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
 copy /y "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
 
 REM
-REM Copy the PDB to the \bin directory one up from the solution.
+REM Copy the PDB to the same directory as the DLL.
 REM
+echo Copying $(SolutionDir)$(Configuration)\$(TargetName).pdb to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
 copy /y "$(SolutionDir)$(Configuration)\$(TargetName).pdb" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
-
-REM
-REM Copy the LIB to a \lib directory one up from the solution.
-REM
-copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\"
 </Command>
       <Message>Copy udt4 libraries and binaries.</Message>
     </PostBuildEvent>
@@ -139,24 +155,39 @@ copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib
       <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
-if not exist "$(SolutionDir)..\lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\lib\$(Platform)\$(Configuration)"
+      <Command>if not exist "$(SolutionDir)bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)bin\$(Platform)\$(Configuration)"
+if not exist "$(SolutionDir)lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)lib\$(Platform)\$(Configuration)"
+if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
 
 REM
-REM Copy the DLL to a \bin directory one up from the solution.
+REM Copy the DLL to a \bin directory under the solution related to the platform and configuration.
 REM
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetFileName) to $(SolutionDir)bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetFileName)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the PDB to the same directory as the DLL.
+REM
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).pdb to $(SolutionDir)bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).pdb" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the LIB to a \lib directory under the solution related to the platform and configuration..
+REM
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).lib to $(SolutionDir)lib\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).lib" "$(SolutionDir)lib\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the DLL to a \bin directory one above the solution related to the platform and configuration.
+REM
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetFileName) to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
 copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
 
 REM
-REM Copy the PDB to a \bin directory one up from the solution.
+REM Copy the PDB to the same directory as the DLL.
 REM
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).pdb to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
 copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).pdb" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
-
-REM
-REM Copy the LIB to a \lib directory one up from the solution.
-REM
-copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\"
-
 </Command>
       <Message>Copy udt4 libraries and binaries.</Message>
     </PostBuildEvent>
@@ -187,18 +218,40 @@ copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).lib" "$(Soluti
       <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
-if not exist "$(SolutionDir)..\lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\lib\$(Platform)\$(Configuration)"
+      <Command>if not exist "$(SolutionDir)bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)bin\$(Platform)\$(Configuration)"
+if not exist "$(SolutionDir)lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)lib\$(Platform)\$(Configuration)"
+if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
 
 REM
-REM Copy the DLL to a \bin directory one up from the solution.
+REM Copy the DLL to a \bin directory under the solution related to the platform and configuration.
 REM
+echo Copying $(SolutionDir)$(Configuration)\$(TargetFileName) to $(SolutionDir)bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the PDB to the same directory as the DLL.
+REM
+echo Copying $(SolutionDir)$(Configuration)\$(TargetName).pdb to $(SolutionDir)bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Configuration)\$(TargetName).pdb" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the LIB to a \lib directory under the solution related to the platform and configuration..
+REM
+echo Copying $(SolutionDir)$(Configuration)\$(TargetName).lib to $(SolutionDir)lib\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)lib\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the DLL to a \bin directory one above the solution related to the platform and configuration.
+REM
+echo Copying $(SolutionDir)$(Configuration)\$(TargetFileName) to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
 copy /y "$(SolutionDir)$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
 
 REM
-REM Copy the LIB to a \lib directory one up from the solution.
+REM Copy the PDB to the same directory as the DLL.
 REM
-copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\"</Command>
+echo Copying $(SolutionDir)$(Configuration)\$(TargetName).pdb to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Configuration)\$(TargetName).pdb" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
+</Command>
       <Message>Copy udt4 libraries and binaries.</Message>
     </PostBuildEvent>
     <CustomBuildStep>
@@ -228,19 +281,39 @@ copy /y "$(SolutionDir)$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib
       <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
-if not exist "$(SolutionDir)..\lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\lib\$(Platform)\$(Configuration)"
+      <Command>if not exist "$(SolutionDir)bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)bin\$(Platform)\$(Configuration)"
+if not exist "$(SolutionDir)lib\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)lib\$(Platform)\$(Configuration)"
+if not exist "$(SolutionDir)..\bin\$(Platform)\$(Configuration)" mkdir "$(SolutionDir)..\bin\$(Platform)\$(Configuration)"
 
 REM
-REM Copy the DLL to a \bin directory one up from the solution.
+REM Copy the DLL to a \bin directory under the solution related to the platform and configuration.
 REM
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetFileName) to $(SolutionDir)bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetFileName)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the PDB to the same directory as the DLL.
+REM
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).pdb to $(SolutionDir)bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).pdb" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the LIB to a \lib directory under the solution related to the platform and configuration..
+REM
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).lib to $(SolutionDir)lib\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).lib" "$(SolutionDir)lib\$(Platform)\$(Configuration)\"
+
+REM
+REM Copy the DLL to a \bin directory one above the solution related to the platform and configuration.
+REM
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetFileName) to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
 copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetFileName)" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
 
 REM
-REM Copy the LIB to a \lib directory one up from the solution.
+REM Copy the PDB to the same directory as the DLL.
 REM
-copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).lib" "$(SolutionDir)..\lib\$(Platform)\$(Configuration)\"
-
+echo Copying $(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).pdb to $(SolutionDir)..\bin\$(Platform)\$(Configuration)\
+copy /y "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).pdb" "$(SolutionDir)..\bin\$(Platform)\$(Configuration)\"
 </Command>
       <Message>Copy udt4 libraries and binaries.</Message>
     </PostBuildEvent>
