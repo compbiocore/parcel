@@ -7,6 +7,7 @@ import mmap
 import os
 import requests
 import stat
+import sys
 
 # Logging
 log = get_logger('utils')
@@ -36,9 +37,9 @@ def get_pbar(file_id, maxval, start_val=0):
     "param int maxva': The maximumum value of the progress bar
 
     """
-    title = 'Downloading {}: '.format(file_id)
+    sys.stderr.write('Downloading {}:{}'.format(file_id, os.linesep))
     pbar = ProgressBar(widgets=[
-        title, Percentage(), ' ',
+        Percentage(), ' ',
         Bar(marker='#', left='[', right=']'), ' ',
         ETA(), ' ', FileTransferSpeed(), ' '], maxval=maxval)
     pbar.currval = start_val
