@@ -6,6 +6,7 @@ import random
 import string
 import tempfile
 import time
+import sys
 
 if OS_WINDOWS:
     WINDOWS = True
@@ -73,8 +74,10 @@ class SegmentProducer(object):
             return True
         corrupt_segments = 0
         intervals = sorted(self.completed.items())
+        sys.stderr.write('Checksumming {}:{}'.format(self.download.ID,
+            os.linesep))
         pbar = ProgressBar(widgets=[
-            'Checksumming {}: '.format(self.download.ID), Percentage(), ' ',
+            Percentage(), ' ',
             Bar(marker='#', left='[', right=']'), ' ', ETA()])
         with mmap_open(self.download.path) as data:
             for interval in pbar(intervals):
