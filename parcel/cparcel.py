@@ -5,11 +5,19 @@ from utils import STRIP
 import platform
 
 
+#
+# By default, the binary package name is lparcel.so.  Change it on Windows
+# systems.
+#
+
+BINARY_NAME = 'lparcel.so'
 if platform.system() == 'Darwin':
     BUFFER_SIZE = 1048567
 else:
     BUFFER_SIZE = 67108864
 
+if platform.system() == 'Windows':
+    BINARY_NAME = 'parcel.dll'
 
 # Logging
 log = get_logger('client')
@@ -17,7 +25,7 @@ PACKAGE_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'src')
 
 # Load library
 try:
-    _lib = cdll.LoadLibrary(os.path.join(PACKAGE_DIR, 'lparcel.so'))
+    _lib = cdll.LoadLibrary(os.path.join(PACKAGE_DIR, BINARY_NAME))
 except:
     log.debug(STRIP("""
     Unable to load parcel udt library. Will proceed with http option only."""))

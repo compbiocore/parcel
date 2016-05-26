@@ -26,6 +26,10 @@
 
 #include "parcel.h"
 
+#if defined(_WINDOWS)
+#include "winport.h"
+#endif
+
 
 EXTERN int tcp2udt_start(char *local_host, char *local_port,
                          char *remote_host, char *remote_port)
@@ -76,7 +80,7 @@ EXTERN int tcp2udt_start_configurable(char *local_host,
 
     addrinfo hints;
     addrinfo* res;
-    int tcp_socket;
+    SOCKET tcp_socket;
     int reuseaddr = 1;
 
     /*******************************************************************
@@ -101,11 +105,15 @@ EXTERN int tcp2udt_start_configurable(char *local_host,
         perror("Unable to create TCP socket");
         return -1;
     }
+#ifndef _WINDOWS
     setsockopt(tcp_socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(int));
+#else
+    setsockopt (tcp_socket, SOL_SOCKET, SO_REUSEADDR, (const char *) &reuseaddr, sizeof (int));
+#endif
 
     /* Bind the server socket */
     log("Proxy binding to TCP socket [%s:%s]", local_host, local_port);
-    if (bind(tcp_socket, res->ai_addr, res->ai_addrlen)){
+    if (bind(tcp_socket, res->ai_addr, static_cast<int>(res->ai_addrlen))){
         perror("Unable to bind TCP socket");
         return -1;
     }
@@ -125,8 +133,13 @@ EXTERN int tcp2udt_start_configurable(char *local_host,
     debug("Creating pipe2tcp server thread");
     pthread_t tcp2udt_server_thread;
     server_args_t *args = (server_args_t*) malloc(sizeof(server_args_t));
+#if defined(_WINDOWS)
+    args->remote_host = _strdup (remote_host);
+    args->remote_port = _strdup (remote_port);
+#else
     args->remote_host     = strdup(remote_host);
     args->remote_port     = strdup(remote_port);
+#endif
     args->tcp_socket      = tcp_socket;
     args->mss             = mss;
     args->udt_buffer_size = udt_buffer_size;
@@ -151,7 +164,7 @@ EXTERN void *tcp2udt_accept_clients(void *_args_)
     server_args_t *args = (server_args_t*) _args_;
     while (1) {
 
-        int client_socket;
+        SOCKET client_socket;
         sockaddr_storage clientaddr;
         socklen_t addrlen = sizeof(clientaddr);
 
@@ -250,7 +263,7 @@ int connect_remote_udt(transcriber_args_t *args)
 
     /* Connect to the server */
     debug("Connecting to remote UDT server");
-    if (UDT::ERROR == UDT::connect(udt_socket, peer->ai_addr, peer->ai_addrlen)){
+    if (UDT::ERROR == UDT::connect(udt_socket, peer->ai_addr, static_cast<int>(peer->ai_addrlen))){
         cerr << "connect: " << UDT::getlasterror().getErrorMessage() << endl;
         freeaddrinfo(peer);
         return -1;
@@ -308,14 +321,6 @@ void *thread_tcp2udt(void *_args_)
      * Begin proxy procedure
      ******************************************************************/
     CircularBuffer *cbuffer = new CircularBuffer(CIRCULAR_BUFF_SIZE);
-
-    /* Create pipe, read from 0, write to 1 */
-    int pipefd[2];
-    if (pipe(pipefd) == -1) {
-        perror("pipe");
-        free(args);
-        return NULL;
-    }
 
     /* Create UDT to pipe thread */
     pthread_t tcp2pipe_thread;

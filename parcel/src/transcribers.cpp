@@ -24,6 +24,9 @@
  ******************************************************************************/
 #include "parcel.h"
 
+#if defined(_WINDOWS)
+#include "winport.h"
+#endif
 
 void *udt2pipe(void *_args_)
 {
@@ -107,11 +110,11 @@ void *pipe2udt(void *_args_)
 
     while (1){
         /* Read from pipe */
-        if ((read_size = args->pipe->read(buffer, BUFF_SIZE)) <= 0){
+        if ((read_size = static_cast<int>(args->pipe->read(buffer, BUFF_SIZE))) <= 0){
             debug("Unable to read from pipe.");
             goto cleanup;
         }
-        debug("Read %d bytes from pipe", read_size);
+        debug("Read %u bytes from pipe", read_size);
 
         /* Write to UDT */
         int sent_size = 0;
@@ -149,7 +152,7 @@ void *pipe2tcp(void *_args_)
 
     while (1){
         /* Read from pipe */
-        if ((read_size = args->pipe->read(buffer, BUFF_SIZE)) <= 0){
+        if ((read_size = static_cast<int>(args->pipe->read(buffer, BUFF_SIZE))) <= 0){
             debug("Unable to read from pipe.");
             goto cleanup;
         }

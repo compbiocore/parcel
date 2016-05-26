@@ -42,7 +42,7 @@ written by
 #define __UDT_H__
 
 
-#ifndef WIN32
+#if !defined(_WINDOWS)
    #include <sys/types.h>
    #include <sys/socket.h>
    #include <netinet/in.h>
@@ -68,7 +68,7 @@ written by
 //use -D_WIN32_WINNT=0x0501
 
 
-#ifdef WIN32
+#if defined(_WINDOWS)
    #ifndef __MINGW__
       // Explicitly define 32-bit and 64-bit numbers
       typedef __int32 int32_t;
@@ -95,7 +95,7 @@ written by
 
 #define NO_BUSY_WAITING
 
-#ifdef WIN32
+#if defined(_WINDOWS)
    #ifndef __MINGW__
       typedef SOCKET SYSSOCKET;
    #else
@@ -245,10 +245,31 @@ private:
 
    int m_iMinor;		// for specific error reasons
    int m_iErrno;		// errno returned by the system if there is any
+
+   //
+   // WINDOWS NOTE:  These three statements generate a C4251 warning on windows.
+   // This warning suggests that template classes exported from a DLL may
+   // be suspect.  We can ignore these warnings for std::string types.
+   // (see: https://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k(C4251)&rd=true)
+   //
+
+#if defined(_WINDOWS)
+#pragma warning(disable: 4251)
+#endif
+
    std::string m_strMsg;	// text error message
 
    std::string m_strAPI;	// the name of UDT function that returns the error
    std::string m_strDebug;	// debug information, set to the original place that causes the error
+
+#if defined(_WINDOWS)
+   //
+   // Reenable the warning for the remainder of the code.
+   //
+
+#pragma warning(default: 4251)
+#endif
+
 
 public: // Error Code
    static const int SUCCESS;
