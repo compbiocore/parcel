@@ -12,6 +12,7 @@ class DownloadStream(object):
 
     http_chunk_size = const.HTTP_CHUNK_SIZE
     check_segment_md5sums = True
+    check_file_md5sum = True
 
     def __init__(self, ID, uri, directory, token=None):
         self.ID = ID
@@ -21,6 +22,7 @@ class DownloadStream(object):
         self.name = None
         self.directory = directory
         self.size = None
+        self.md5sum = None
         self.token = token
         self.uri = uri
 
@@ -153,6 +155,7 @@ class DownloadStream(object):
         attachment = r.headers.get('content-disposition', None)
         self.name = (attachment.split('filename=')[-1]
                      if attachment else 'untitled')
+        self.md5sum = r.headers.get('content-md5')
         return self.name, self.size
 
     def write_segment(self, segment, q_complete, retries=5):

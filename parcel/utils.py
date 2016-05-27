@@ -37,11 +37,11 @@ def get_pbar(file_id, maxval, start_val=0):
     "param int maxva': The maximumum value of the progress bar
 
     """
-    sys.stderr.write('Downloading {}:{}'.format(file_id, os.linesep))
+    log.info('Downloading {}:'.format(file_id))
     pbar = ProgressBar(widgets=[
         Percentage(), ' ',
         Bar(marker='#', left='[', right=']'), ' ',
-        ETA(), ' ', FileTransferSpeed(), ' '], maxval=maxval)
+        ETA(), ' ', FileTransferSpeed(), ' '], maxval=maxval, fd=sys.stdout)
     pbar.currval = start_val
     pbar.start()
     return pbar
@@ -127,6 +127,14 @@ def md5sum(block):
     m = hashlib.md5()
     m.update(block)
     return m.hexdigest()
+
+
+def md5sum_whole_file(fname):
+    hash_md5 = hashlib.md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
 
 
 @contextmanager

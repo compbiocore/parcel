@@ -74,11 +74,10 @@ class SegmentProducer(object):
             return True
         corrupt_segments = 0
         intervals = sorted(self.completed.items())
-        sys.stderr.write('Checksumming {}:{}'.format(self.download.ID,
-            os.linesep))
+        log.info('Checksumming {}:'.format(self.download.ID))
         pbar = ProgressBar(widgets=[
             Percentage(), ' ',
-            Bar(marker='#', left='[', right=']'), ' ', ETA()])
+            Bar(marker='#', left='[', right=']'), ' ', ETA()], fd=sys.stdout)
         with mmap_open(self.download.path) as data:
             for interval in pbar(intervals):
                 log.debug('Checking segment md5: {}'.format(interval))
