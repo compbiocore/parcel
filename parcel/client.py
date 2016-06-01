@@ -146,7 +146,6 @@ class Client(object):
             # Download file
             try:
                 self.parallel_download(stream)
-                self.validate_file_md5sum(stream)
                 downloaded.append(file_id)
 
             # Handle file download error, store error to print out later
@@ -229,3 +228,5 @@ class Client(object):
         # Wait for file to finish download
         producer.wait_for_completion()
         self.stop_timer()
+        self.validate_file_md5sum(stream)
+
