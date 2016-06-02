@@ -105,7 +105,7 @@ class Client(object):
             log.debug('checksum validation disabled')
             return
 
-        log.info('Validating checksum...')
+        print 'Validating checksum...'
 
         if not stream.is_regular_file:
             raise Exception('Not a regular file')

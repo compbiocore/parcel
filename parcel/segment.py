@@ -47,7 +47,7 @@ class SegmentProducer(object):
 
     def _setup_pbar(self):
         self.pbar = None
-        self.pbar = get_pbar(self.download.ID, self.download.size)
+        self.pbar = get_pbar(self.download.ID, self.download.size, filename=self.download.name)
 
     def _setup_work(self):
         if self.is_complete():
@@ -74,7 +74,10 @@ class SegmentProducer(object):
             return True
         corrupt_segments = 0
         intervals = sorted(self.completed.items())
-        log.info('Checksumming {}:'.format(self.download.ID))
+        if self.download.name:
+            print 'Checksumming {} (UUID {}):'.format(self.download.name, self.download.ID)
+        else:
+            print 'Checksumming {}:'.format(self.download.ID)
         pbar = ProgressBar(widgets=[
             Percentage(), ' ',
             Bar(marker='#', left='[', right=']'), ' ', ETA()], fd=sys.stdout)

@@ -104,13 +104,10 @@ if __name__ == '__main__':
                         default=const.SAVE_INTERVAL,
                         help='The number of chunks after which to flush state file. A lower save interval will result in more frequent printout but lower performance.')
 
-    token_args = parser.add_mutually_exclusive_group(required=False)
-    token_args.add_argument('-t', '--token-file',
+    parser.add_argument('-t', '--token-file',
                             type=lambda x: argparse.FileType('r')(x).read(),
                             dest='token',
                             help='authentication token file')
-    token_args.add_argument('-T', '--token', default='', type=str,
-                            dest='token', help='authentication token')
 
     #############################################################
     #                       UDT options
@@ -120,7 +117,7 @@ if __name__ == '__main__':
     #                             parents=[parser])
 
     parser.add_argument('-u', '--udt', action='store_true',
-                        help='Use the UDT protocol.  Better for WAN connections')
+                        help='Use the UDT protocol.')
     parser.add_argument('-H', '--proxy-host', default=defaults.proxy_host,
                         type=str, dest='proxy_host',
                         help='The port to bind the local proxy to')

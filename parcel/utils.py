@@ -30,14 +30,17 @@ def check_transfer_size(actual, expected):
     return actual == expected
 
 
-def get_pbar(file_id, maxval, start_val=0):
+def get_pbar(file_id, maxval, start_val=0, filename=None):
     """Create and initialize a custom progressbar
 
     :param str title: The text of the progress bar
     "param int maxva': The maximumum value of the progress bar
 
     """
-    log.info('Downloading {}:'.format(file_id))
+    if filename:
+        print 'Downloading {} (UUID {}):'.format(filename, file_id)
+    else:
+        print 'Downloading {}:'.format(file_id)
     pbar = ProgressBar(widgets=[
         Percentage(), ' ',
         Bar(marker='#', left='[', right=']'), ' ',
