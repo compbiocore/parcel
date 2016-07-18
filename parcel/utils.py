@@ -50,12 +50,12 @@ def get_pbar(file_id, maxval, start_val=0):
 
 def print_opening_header(file_id):
     log.info('')
-    log.info('v{}v'.format('{s:{c}^{n}}'.format(
+    log.info('v{all}v'.format(all='{s:{c}^{n}}'.format(
         s=' {file} '.format(file=file_id), n=50, c='-')))
 
 
 def print_closing_header(file_id):
-    log.info('^{}^'.format('{s:{c}^{n}}'.format(
+    log.info('^{all}^'.format(all='{s:{c}^{n}}'.format(
         s=' {file} '.format(file=file_id), n=50, c='-')))
 
 
