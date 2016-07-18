@@ -15,7 +15,7 @@ def parcel_build(command_subclass):
             check_call(['make'])
         except Exception as e:
             logging.error(
-                "Unable to build UDT library: {}".format(e))
+                "Unable to build UDT library: {err}".format(err=e))
         if isinstance(self, install):
             install.do_egg_install(self)
         else:
