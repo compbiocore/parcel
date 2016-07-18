@@ -36,6 +36,8 @@ class Client(object):
             'http_chunk_size', const.HTTP_CHUNK_SIZE)
         DownloadStream.check_segment_md5sums = kwargs.get(
             'segment_md5sums', True)
+        DownloadStream.check_file_md5sum = kwargs.get(
+            'file_md5sum', True)
         SegmentProducer.save_interval = kwargs.get(
             'save_interval', const.SAVE_INTERVAL)
 
@@ -99,6 +101,22 @@ class Client(object):
             log.info(
                 'Download complete: {0:.2f} Gbps average'.format(rate))
 
+    def validate_file_md5sum(self, stream):
+        if not stream.check_file_md5sum:
+            log.debug('checksum validation disabled')
+            return
+
+        log.info('Validating checksum...')
+
+        if not stream.is_regular_file:
+            raise Exception('Not a regular file')
+
+        if stream.md5sum is None:
+            raise Exception("Cannot validate this file since the server did not provide an md5sum. Use the '--no-file-md5sum' option to ignore this error.")
+
+        if utils.md5sum_whole_file(stream.path) != stream.md5sum:
+            raise Exception("File checksum is invalid")
+
     def download_files(self, file_ids, *args, **kwargs):
         """Download a list of files.
 
@@ -129,6 +147,7 @@ class Client(object):
             # Download file
             try:
                 self.parallel_download(stream)
+                self.validate_file_md5sum(stream)
                 downloaded.append(file_id)
 
             # Handle file download error, store error to print out later

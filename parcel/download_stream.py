@@ -12,6 +12,7 @@ class DownloadStream(object):
 
     http_chunk_size = const.HTTP_CHUNK_SIZE
     check_segment_md5sums = True
+    check_file_md5sum = True
 
     def __init__(self, ID, uri, directory, token=None):
         self.ID = ID
@@ -21,6 +22,7 @@ class DownloadStream(object):
         self.name = None
         self.directory = directory
         self.size = None
+        self.md5sum = None
         self.token = token
         self.uri = uri
 
@@ -37,8 +39,8 @@ class DownloadStream(object):
         except:
             self.log.warn(utils.STRIP(
                 """Unable to set file length. File appears to
-                be a {} file, attempting to proceed.
-                """.format(utils.get_file_type(self.path))))
+                be a {file_type} file, attempting to proceed.
+                """.format(file_type=utils.get_file_type(self.path))))
             self.is_regular_file = False
 
     def setup_directories(self):
@@ -62,7 +64,7 @@ class DownloadStream(object):
         :returns: A string specifying the download state path
         """
         return os.path.join(
-            self.state_directory, '{}.parcel'.format(self.name))
+            self.state_directory, '{name}.parcel'.format(name=self.name))
 
     @property
     def state_directory(self):
@@ -89,7 +91,7 @@ class DownloadStream(object):
             'X-Auth-Token': self.token,
         }
         if start is not None and end is not None:
-            header['Range'] = 'bytes={}-{}'.format(start, end)
+            header['Range'] = 'bytes={b_start}-{b_end}'.format(b_start=start, b_end=end)
             # provide host because it's mandatory, range request
             # may not work otherwise
             scheme, host, path, params, q, frag = urlparse.urlparse(self.uri)
@@ -110,7 +112,7 @@ class DownloadStream(object):
 
         """
         url = urlparse.urljoin(self.uri, self.ID)
-        self.log.debug('Request to {}'.format(url))
+        self.log.debug('Request to {url}'.format(url=url))
 
         # Set urllib3 retries and mount for session
         a = requests.adapters.HTTPAdapter(max_retries=max_retries)
@@ -122,13 +124,13 @@ class DownloadStream(object):
             r = s.get(url, headers=headers, verify=verify, stream=True)
         except Exception as e:
             raise RuntimeError((
-                "Unable to connect to API: ({}). Is this url correct: '{}'? "
+                "Unable to connect to API: ({err}). Is this url correct: '{uri}'? "
                 "Is there a connection to the API? Is the server running?"
-            ).format(str(e), self.uri))
+            ).format(err=str(e), uri=self.uri))
         try:
             r.raise_for_status()
         except Exception as e:
-            raise RuntimeError('{}: {}'.format(str(e), r.text))
+            raise RuntimeError('{err}: {reason}'.format(err=str(e), reason=r.text))
 
         if close:
             r.close()
@@ -149,10 +151,11 @@ class DownloadStream(object):
             raise ValueError(
                 'Unexpected response from server: missing content length.')
         self.size = long(content_length)
-        self.log.info('Request responded   : {} bytes'.format(self.size))
+        self.log.info('Request responded   : {size} bytes'.format(size=self.size))
         attachment = r.headers.get('content-disposition', None)
         self.name = (attachment.split('filename=')[-1]
                      if attachment else 'untitled')
+        self.md5sum = r.headers.get('content-md5')
         return self.name, self.size
 
     def write_segment(self, segment, q_complete, retries=5):
@@ -181,12 +184,13 @@ class DownloadStream(object):
             r = self.request(self.header(start, end))
 
             # Iterate over the data stream
-            self.log.debug('Initializing segment: {}-{}'.format(start, end))
+            self.log.debug('Initializing segment: {b_start}-{b_end}'.format(
+                b_start=start, b_end=end)
+                )
             for chunk in r.iter_content(chunk_size=self.http_chunk_size):
                 if not chunk:
                     continue  # Empty are keep-alives.
                 offset = start + written
-                written += len(chunk)
 
                 # Write the chunk to disk, create an interval that
                 # represents the chunk, get md5 info if necessary, and
@@ -199,15 +203,20 @@ class DownloadStream(object):
                 complete_segment = Interval(offset, offset+len(chunk), iv_data)
                 q_complete.put(complete_segment)
 
+                written += len(chunk)
+
         except KeyboardInterrupt:
             return self.log.error('Process stopped by user.')
 
         # Retry on exception if we haven't exceeded max retries
         except Exception as e:
-            self.log.warn(
-                'Unable to download part of file: {}\n.'.format(str(e)))
+            # TODO FIXME HACK create new segment to avoid duplicate downloads
+            segment = Interval(segment.begin+written, segment.end, None)
+
+            self.log.debug(
+                'Unable to download part of file: {err}\n.'.format(err=str(e)))
             if retries > 0:
-                self.log.warn('Retrying download of this segment')
+                self.log.debug('Retrying download of this segment')
                 return self.write_segment(segment, q_complete, retries-1)
             else:
                 self.log.error('Max retries exceeded.')
@@ -215,7 +224,10 @@ class DownloadStream(object):
 
         # Check that the data is not truncated or elongated
         if written != segment.end-segment.begin:
-            self.log.warn('Segment corruption: {}'.format(
+            # TODO FIXME HACK create new segment to avoid duplicate downloads
+            segment = Interval(segment.begin+written, segment.end, None)
+
+            self.log.debug('Segment corruption: {err}'.format(err=
                 '(non-fatal) retrying' if retries else 'max retries exceeded'))
             if retries:
                 return self.write_segment(segment, q_complete, retries-1)
@@ -226,8 +238,9 @@ class DownloadStream(object):
         return written
 
     def print_download_information(self):
-        self.log.info('Starting download   : {}'.format(self.ID))
-        self.log.info('File name           : {}'.format(self.name))
-        self.log.info('Download size       : {} B ({:.2f} GB)'.format(
-            self.size, (self.size / float(const.GB))))
-        self.log.info('Downloading file to : {}'.format(self.path))
+        self.log.info('Starting download   : {ID}'.format(ID=self.ID))
+        self.log.info('File name           : {name}'.format(name=self.name))
+        self.log.info('Download size       : %d B (%.2f GB)' % (
+            self.size, (self.size / float(const.GB)))
+            )
+        self.log.info('Downloading file to : {path}'.format(path=self.path))

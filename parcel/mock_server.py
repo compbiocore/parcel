@@ -26,7 +26,7 @@ def download(file_id):
             content = f.read()
     response = make_response(content)
     response.headers["Content-Disposition"] = (
-        "attachment; filename={}".format(file_id))
+        "attachment; filename={fid}".format(fid=file_id))
     response.headers["Content-Length"] = len(content)
     return response
 
@@ -42,12 +42,12 @@ def parse_ranges(ranges):
         ranges = ranges.strip()
         unit, nums = ranges.split("=")
         if unit != "bytes":
-            raise RuntimeError("Only byte rangess are supported, not {}".format(unit))
+            raise RuntimeError("Only byte rangess are supported, not {unit}".format(unit=unit))
         begin, end = nums.split("-")
         begin, end = int(begin), int(end)
         if end < begin:
-            raise RuntimeError("impossible ranges: {}".format(ranges))
+            raise RuntimeError("impossible ranges: {ranges}".format(ranges=ranges))
         else:
             return begin, end
     except ValueError:
-        raise RuntimeError("Malformed ranges: {}".format(ranges))
+        raise RuntimeError("Malformed ranges: {ranges}".format(ranges=ranges))

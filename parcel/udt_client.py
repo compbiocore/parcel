@@ -13,7 +13,7 @@ class UDTClient(Client):
     def __init__(self, proxy_host, proxy_port, remote_uri,
                  external_proxy=False, *args, **kwargs):
         if not remote_uri.startswith('http'):
-            remote_uri = 'https://{}'.format(remote_uri)
+            remote_uri = 'https://{uri}'.format(uri=remote_uri)
         if not external_proxy:
             # Create a local UDT proxy that translates TCP to UDT
             self.start_proxy_server(proxy_host, proxy_port, remote_uri)
@@ -28,8 +28,11 @@ class UDTClient(Client):
         """
         p = urlparse.urlparse(remote_uri)
         scheme = p.scheme or 'https'
-        local_uri = '{}://{}:{}{}'.format(
-            scheme, proxy_host, proxy_port, p.path)
+        local_uri = '{scheme}://{phost}:{pport}{path}'.format(
+            scheme=scheme,
+            phost=proxy_host,
+            pport=proxy_port,
+            path=p.path)
         return local_uri
 
     def start_proxy_server(self, proxy_host, proxy_port, remote_uri):
@@ -39,8 +42,11 @@ class UDTClient(Client):
 
         p = urlparse.urlparse(remote_uri)
         port = p.port or 9000
-        log.info('Binding proxy server {}:{} -> {}:{}'.format(
-            str(proxy_host), str(proxy_port), str(p.hostname), str(port)))
+        log.info('Binding proxy server {phost}:{pport} -> {hostname}:{port}'.format(
+            phost=str(proxy_host),
+            pport=str(proxy_port),
+            hostname=str(p.hostname),
+            port=str(port)))
         proxy = lib.tcp2udt_start(
             str(proxy_host), str(proxy_port), str(p.hostname), str(port))
         assert proxy == 0, 'Proxy failed to start'

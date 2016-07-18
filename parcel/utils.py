@@ -7,6 +7,7 @@ import mmap
 import os
 import requests
 import stat
+import sys
 
 # Logging
 log = get_logger('utils')
@@ -37,10 +38,11 @@ def get_pbar(file_id, maxval, start_val=0):
 
     """
     title = 'Downloading {file}: '.format(file=file_id)
+    log.info('Downloading {file}:'.format(file=file_id))
     pbar = ProgressBar(widgets=[
-        title, Percentage(), ' ',
+        Percentage(), ' ',
         Bar(marker='#', left='[', right=']'), ' ',
-        ETA(), ' ', FileTransferSpeed(), ' '], maxval=maxval)
+        ETA(), ' ', FileTransferSpeed(), ' '], maxval=maxval, fd=sys.stdout)
     pbar.currval = start_val
     pbar.start()
     return pbar
@@ -126,6 +128,14 @@ def md5sum(block):
     m = hashlib.md5()
     m.update(block)
     return m.hexdigest()
+
+
+def md5sum_whole_file(fname):
+    hash_md5 = hashlib.md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
 
 
 @contextmanager
