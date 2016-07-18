@@ -50,13 +50,15 @@ def get_pbar(file_id, maxval, start_val=0):
 
 def print_opening_header(file_id):
     log.info('')
-    log.info('v{all}v'.format(all='{s:{c}^{n}}'.format(
-        s=' {file} '.format(file=file_id), n=50, c='-')))
+    fill_len = (50 - len(file_id)) / 2
+    file_string = "%s %s %s" % (fill_len*'-', file_id, fill_len*'-')
+    log.info("v%sv" % file_string)
 
 
 def print_closing_header(file_id):
-    log.info('^{all}^'.format(all='{s:{c}^{n}}'.format(
-        s=' {file} '.format(file=file_id), n=50, c='-')))
+    fill_len = (50 - len(file_id)) / 2
+    file_string = "%s %s %s" % (fill_len*'-', file_id, fill_len*'-')
+    log.info("^%s^" % file_string)
 
 
 def write_offset(path, data, offset):
