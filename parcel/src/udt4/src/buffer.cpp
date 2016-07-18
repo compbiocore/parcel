@@ -84,7 +84,7 @@ m_iCount(0)
 
    m_pFirstBlock = m_pCurrBlock = m_pLastBlock = m_pBlock;
 
-   #ifndef WIN32
+   #if !defined(_WINDOWS)
       pthread_mutex_init(&m_BufLock, NULL);
    #else
       m_BufLock = CreateMutex(NULL, false, NULL);
@@ -110,7 +110,7 @@ CSndBuffer::~CSndBuffer()
       delete temp;
    }
 
-   #ifndef WIN32
+   #if !defined(_WINDOWS)
       pthread_mutex_destroy(&m_BufLock);
    #else
       CloseHandle(m_BufLock);
@@ -185,7 +185,9 @@ int CSndBuffer::addBufferFromFile(fstream& ifs, int len)
          pktlen = m_iMSS;
 
       ifs.read(s->m_pcData, pktlen);
-      if ((pktlen = ifs.gcount()) <= 0)
+
+
+      if ((pktlen = (int) ifs.gcount()) <= 0)
          break;
 
       // currently file transfer is only available in streaming mode, message is always in order, ttl = infinite

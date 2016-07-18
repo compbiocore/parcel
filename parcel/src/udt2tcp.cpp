@@ -26,6 +26,9 @@
 
 #include "parcel.h"
 
+#if defined(_WINDOWS)
+#include "winport.h"
+#endif
 
 EXTERN int udt2tcp_start(char *local_host, char *local_port,
                          char *remote_host, char *remote_port)
@@ -109,7 +112,7 @@ EXTERN int udt2tcp_start_configurable(char *local_host,
     UDT::setsockopt(udt_socket, 0, UDT_REUSEADDR, &reuseaddr, sizeof(int));
 
     /* Bind the server socket */
-    if (UDT::bind(udt_socket, res->ai_addr, res->ai_addrlen) == UDT::ERROR){
+    if (UDT::bind(udt_socket, res->ai_addr, static_cast<int>(res->ai_addrlen)) == UDT::ERROR){
         error("bind: %s", UDT::getlasterror().getErrorMessage());
         return -1;
     }
@@ -127,10 +130,17 @@ EXTERN int udt2tcp_start_configurable(char *local_host,
     }
 
     log("Creating pipe2tcp server thread");
+
     pthread_t udt2tcp_server_thread;
     server_args_t *args = (server_args_t*) malloc(sizeof(server_args_t));
+
+#if defined(_WINDOWS)
+    args->remote_host = _strdup (remote_host);
+    args->remote_port = _strdup (remote_port);
+#else
     args->remote_host = strdup(remote_host);
     args->remote_port = strdup(remote_port);
+#endif
     args->udt_socket  = udt_socket;
     if (pthread_create(&udt2tcp_server_thread, NULL, udt2tcp_accept_clients, args)){
         error("unable to create udt2tcp server thread");
@@ -206,7 +216,7 @@ int connect_remote_tcp(udt2tcp_args_t *args)
           args->remote_host, args->remote_port);
 
     struct addrinfo hints, *local, *peer;
-    int tcp_socket;
+    SOCKET tcp_socket;
 
     /* Create address information */
     memset(&hints, 0, sizeof(struct addrinfo));
@@ -228,12 +238,12 @@ int connect_remote_tcp(udt2tcp_args_t *args)
     }
 
     /* Connect to the remote tcp server */
-    if (connect(tcp_socket, peer->ai_addr, peer->ai_addrlen)){
+    if (connect(tcp_socket, peer->ai_addr, static_cast<int>(peer->ai_addrlen))){
         perror("TCP connect");
         return -1;
     }
     freeaddrinfo(peer);
-    return tcp_socket;
+    return static_cast<int>(tcp_socket);
 }
 
 void *thread_udt2tcp(void *_args_)
@@ -279,12 +289,6 @@ void *thread_udt2tcp(void *_args_)
     }
 
     /* Create udt2tcp pipe, read from 0, write to 1 */
-    int pipefd[2];
-    if (pipe(pipefd) == -1) {
-        perror("pipe");
-        free(args);
-        return NULL;
-    }
 
     /*******************************************************************
      * Begin proxy procedure

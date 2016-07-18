@@ -1,0 +1,14 @@
+LIBRARY PARCEL
+EXPORTS
+    udt2tcp_start
+    udt2tcp_start_configurable
+    udt2tcp_accept_clients
+    tcp2udt_start
+    tcp2udt_start_configurable
+    tcp2udt_accept_clients
+    tcp2udt_start
+    tcp2udt_start_configurable
+    tcp2udt_accept_clients
+    udt2tcp_start
+    udt2tcp_start_configurable
+    udt2tcp_accept_clients

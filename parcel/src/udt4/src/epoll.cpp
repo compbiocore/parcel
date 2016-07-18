@@ -188,7 +188,7 @@ int CEPoll::wait(const int eid, set<UDTSOCKET>* readfds, set<UDTSOCKET>* writefd
    if (lrfds) lrfds->clear();
    if (lwfds) lwfds->clear();
 
-   int total = 0;
+   size_t total = 0;
 
    int64_t entertime = CTimer::getTime();
    while (true)
@@ -288,8 +288,8 @@ int CEPoll::wait(const int eid, set<UDTSOCKET>* readfds, set<UDTSOCKET>* writefd
 
       CGuard::leaveCS(m_EPollLock);
 
-      if (total > 0)
-         return total;
+      if (total != 0)
+         return static_cast<int>(total);
 
       if ((msTimeOut >= 0) && (int64_t(CTimer::getTime() - entertime) >= msTimeOut * 1000LL))
          throw CUDTException(6, 3, 0);

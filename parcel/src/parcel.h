@@ -26,11 +26,26 @@
 #define __PARCEL_H__
 
 /* Standard libraries */
-#include <unistd.h>
+
+#if !defined(_WINDOWS)
+    #include <unistd.h>
+#endif
+
 #include <cstdlib>
 #include <cstring>
-#include <netdb.h>
-#include <sys/socket.h>
+
+
+#if !defined(_WINDOWS)
+    #include <netdb.h>
+    #include <sys/socket.h>
+#else
+    #include <winsock2.h>
+    #include <ws2tcpip.h>
+    #ifdef LEGACY_WIN32
+        #include <wspiapi.h>
+    #endif
+#endif
+
 #include <iostream>
 #include <assert.h>
 #include <signal.h>
@@ -39,23 +54,43 @@
 #include <udt>
 #include "cbuffer.h"
 
+
 /******************************************************************************/
 #if __APPLE__
 /* Set a lower buffer size to 1MiB due to OSX restrictions */
 #define BUFF_SIZE 1048567
 #define MSS 8400
 #else
+#if defined(_WIN32) && !defined(_WIN64)
+ //
+ // There is a memory leak in the Circular Buffer code.    Use a smaller
+ // buffer size on 32 bit Windows until the bug is fixed.
+ //
+
+#define BUFF_SIZE 1048567
+#define MSS 8400
+#else
 /*  Otherwise attempt to use a 64MiB buffer for all other systems.
- *  This 64MiB buffer size is (1) recommended (2) empirically verified
- *  to have given the best performance
- */
+*  This 64MiB buffer size is (1) recommended (2) empirically verified
+*  to have given the best performance
+*/
+
 #define BUFF_SIZE 67108864
 #define MSS 8400
+#endif
 #endif
 
 #define CIRCULAR_BUFF_SIZE 4*BUFF_SIZE
 #define EXTERN extern "C"
 #define LOG
+
+#if !defined(_WINDOWS)
+/*
+ * On non-Windows machines, sockets are ints.
+ */
+
+typedef int SOCKET;
+#endif
 
 /* Uncomment this line and recompile to get verbose logging output */
 /* #define DEBUG */
@@ -68,7 +103,7 @@ using namespace std;
  ******************************************************************************/
 typedef struct server_args_t {
     UDTSOCKET udt_socket;
-    int tcp_socket;
+    SOCKET tcp_socket;
     char *remote_host;
     char *remote_port;
     int mss;
@@ -78,7 +113,7 @@ typedef struct server_args_t {
 
 typedef struct transcriber_args_t {
     UDTSOCKET udt_socket;
-    int tcp_socket;
+    SOCKET tcp_socket;
     char *remote_host;
     char *remote_port;
     int mss;
@@ -92,7 +127,7 @@ typedef struct udt_pipe_args_t {
 } udt_pipe_args_t;
 
 typedef struct tcp_pipe_args_t {
-    int tcp_socket;
+    SOCKET tcp_socket;
     CircularBuffer *pipe;
 } tcp_pipe_args_t;
 
