@@ -1,6 +1,7 @@
 from .log import get_logger
 from . import utils
 from . import const
+from .defaults import max_timeout
 
 from intervaltree import Interval
 import os
@@ -129,7 +130,7 @@ class DownloadStream(object):
 
         headers = self.headers() if headers is None else headers
         try:
-            r = s.get(url, headers=headers, verify=verify, stream=True)
+            r = s.get(url, headers=headers, verify=verify, stream=True, timeout=max_timeout)
         except Exception as e:
             raise RuntimeError((
                 "Unable to connect to API: ({}). Is this url correct: '{}'? "
