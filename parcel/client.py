@@ -147,6 +147,8 @@ class Client(object):
             # Download file
             try:
                 self.parallel_download(stream)
+                if os.path.isfile(stream.temp_path):
+                    utils.remove_partial_extension(stream.temp_path)
                 self.validate_file_md5sum(stream)
                 downloaded.append(file_id)
 
@@ -220,6 +222,7 @@ class Client(object):
                         raise
                     else:
                         log.error("Download aborted: {expt}".format(expt=str(e)))
+                        break
 
         # Divide work amongst process pool
         pool = [Process(target=download_worker) for i in range(n_procs)]

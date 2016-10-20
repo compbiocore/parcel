@@ -2,7 +2,6 @@
 import urlparse
 from cparcel import lib
 import time
-import platform
 
 from log import get_logger
 
@@ -28,14 +27,5 @@ class Server(object):
             str(proxy_host), str(proxy_port), str(p.hostname), str(port))
         assert proxy == 0, 'Proxy failed to start'
 
-        sleeptime = 99999999
-        
-        #
-        # On Windows, sleep can't be that large.
-        #
-
-        if platform.system() == 'Windows':
-            sleeptime = 1000000
-
         while True:
-            time.sleep(sleeptime)  # Block because udt2tcp_start is non-blocking
+            time.sleep(99999999)  # Block because udt2tcp_start is non-blocking

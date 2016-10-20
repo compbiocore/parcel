@@ -4,3 +4,5 @@ processes = 8
 subcommand = 'http'
 proxy_host = 'localhost'
 proxy_port = 9000
+# 60 seconds timeout on the server's response
+max_timeout = 60

@@ -1,6 +1,7 @@
 from .log import get_logger
 from . import utils
 from . import const
+from .defaults import max_timeout
 
 from intervaltree import Interval
 import os
@@ -35,7 +36,7 @@ class DownloadStream(object):
     def setup_file(self):
         self.setup_directories()
         try:
-            utils.set_file_length(self.path, self.size)
+            utils.set_file_length(self.temp_path, self.size)
         except:
             self.log.warn(utils.STRIP(
                 """Unable to set file length. File appears to
@@ -56,6 +57,14 @@ class DownloadStream(object):
         :returns: A string specifying the full download path
         """
         return os.path.join(self.directory, self.name)
+
+    @property
+    def temp_path(self):
+        """Function to standardize the temp path for a download.
+
+        :returns: A string specifying the full temp path
+        """
+        return os.path.join(self.directory, '{}.partial'.format(self.name))
 
     @property
     def state_path(self):
@@ -121,7 +130,7 @@ class DownloadStream(object):
 
         headers = self.headers() if headers is None else headers
         try:
-            r = s.get(url, headers=headers, verify=verify, stream=True)
+            r = s.get(url, headers=headers, verify=verify, stream=True, timeout=max_timeout)
         except Exception as e:
             raise RuntimeError((
                 "Unable to connect to API: ({err}). Is this url correct: '{uri}'? "
@@ -195,7 +204,7 @@ class DownloadStream(object):
                 # Write the chunk to disk, create an interval that
                 # represents the chunk, get md5 info if necessary, and
                 # report completion back to the producer
-                utils.write_offset(self.path, chunk, offset)
+                utils.write_offset(self.temp_path, chunk, offset)
                 if self.check_segment_md5sums:
                     iv_data = {'md5sum': utils.md5sum(chunk)}
                 else:
@@ -240,7 +249,7 @@ class DownloadStream(object):
     def print_download_information(self):
         self.log.info('Starting download   : {ID}'.format(ID=self.ID))
         self.log.info('File name           : {name}'.format(name=self.name))
-        self.log.info('Download size       : %d B (%.2f GB)' % (
-            self.size, (self.size / float(const.GB)))
+        self.log.info('Download size       : {bytes} B {gigabytes:.2f} GB)'.format(
+            bytes=self.size, gigabytes=(self.size / float(const.GB)))
             )
         self.log.info('Downloading file to : {path}'.format(path=self.path))
