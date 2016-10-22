@@ -127,7 +127,7 @@ class SegmentProducer(object):
             state_path=self.download.state_path))
 
         if not os.path.isfile(self.download.path) and\
-                not os.path.:
+                not os.path.isfile(self.download.temp_path):
             log.warn(STRIP(
                 """State file found at '{state_path}' but no file for {dl_ID}.
                 Restarting entire download.""".format(
