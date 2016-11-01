@@ -21,8 +21,9 @@ class Server(object):
         p = urlparse.urlparse(remote_uri)
         assert p.scheme, 'No url scheme specified'
         port = p.port or {'https': '443', 'http': '80'}[p.scheme]
-        log.info('Binding proxy server {}:{} -> {}:{}'.format(
-            proxy_host, proxy_port, p.hostname, port))
+        log.info('Binding proxy server {host}:{port} -> {host2}:{port2}'.format(
+            host=proxy_host, port=proxy_port,
+            host2=p.hostname, port2=port))
         proxy = lib.udt2tcp_start(
             str(proxy_host), str(proxy_port), str(p.hostname), str(port))
         assert proxy == 0, 'Proxy failed to start'

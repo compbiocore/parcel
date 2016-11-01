@@ -64,7 +64,7 @@ class DownloadStream(object):
 
         :returns: A string specifying the full temp path
         """
-        return os.path.join(self.directory, '{}.partial'.format(self.name))
+        return os.path.join(self.directory, '{name}.partial'.format(name=self.name))
 
     @property
     def state_path(self):

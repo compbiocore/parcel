@@ -48,12 +48,12 @@ class TestParcelUDT(unittest.TestCase):
                 ['parcel', 'udt', '-v',
                  '-n1',
                  '-d', self.dest_dir,
-                 'http://{}:{}'.format(server_host, server_port),
+                 'http://{host}:{port}'.format(host=server_host, port=server_port),
                  file_id])
             self.validate_file(
                 os.path.join(gettempdir(), file_id),
-                os.path.join(gettempdir(), self.dest_dir, '{}_{}'.format(
-                    file_id, file_id)))
+                os.path.join(gettempdir(), self.dest_dir, '{id1}_{id2}'.format(
+                    id1=file_id, id2=file_id)))
 
     @unittest.skip("UDT tests unfinished")
     def test_parallel(self):
@@ -63,9 +63,9 @@ class TestParcelUDT(unittest.TestCase):
                 ['parcel', 'udt', '-v',
                  '-n4',
                  '-d', self.dest_dir,
-                 'http://{}:{}'.format(server_host, server_port),
+                 'http://{host}:{port}'.format(host=server_host, port=server_port),
                  file_id])
             self.validate_file(
                 os.path.join(gettempdir(), file_id),
-                os.path.join(gettempdir(), self.dest_dir, '{}_{}'.format(
-                    file_id, file_id)))
+                os.path.join(gettempdir(), self.dest_dir, '{id1}_{id2}'.format(
+                    id1=file_id, id2=file_id)))

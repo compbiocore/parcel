@@ -20,8 +20,9 @@ def main(args):
     port = p.port or {'https': '443', 'http': '80'}.get(p.scheme, '80')
 
     # Start proxy
-    log.info('Binding UDT<->TCP server {}:{} -> {}:{}'.format(
-        args.host, args.port, p.hostname, port))
+    log.info('Binding UDT<->TCP server {host}:{port} -> {host2}:{port2}'.format(
+        host=args.host, port=args.port, 
+        host2=p.hostname, port2=port))
     proxy = lib.udt2tcp_start(
         str(args.host),
         str(args.port),
