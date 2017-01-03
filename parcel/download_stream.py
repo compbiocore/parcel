@@ -1,8 +1,8 @@
-from .log import get_logger
 from . import utils
 from . import const
 from .defaults import max_timeout
 
+import logging
 from intervaltree import Interval
 import os
 import requests
@@ -19,7 +19,7 @@ class DownloadStream(object):
         self.ID = ID
         self.initialized = False
         self.is_regular_file = True
-        self.log = get_logger(str(ID))
+        self.log = logging.getLogger(str(ID))
         self.name = None
         self.directory = directory
         self.size = None

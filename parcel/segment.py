@@ -1,9 +1,9 @@
 from .portability import OS_WINDOWS
 from intervaltree import Interval, IntervalTree
-from log import get_logger
 from utils import get_pbar, md5sum, mmap_open, STRIP, check_file_existence_and_size
 from const import SAVE_INTERVAL
 from progressbar import ProgressBar, Percentage, Bar, ETA
+import logging
 import os
 import pickle
 import random
@@ -22,7 +22,7 @@ else:
     from multiprocessing import Manager
     WINDOWS = False
 
-log = get_logger('segment')
+log = logging.getLogger('segment')
 
 
 class SegmentProducer(object):

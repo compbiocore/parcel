@@ -1,17 +1,17 @@
 from . import const
 from . import utils
 from .download_stream import DownloadStream
-from .log import get_logger
 from .portability import colored
 from .portability import Process
 from .segment import SegmentProducer
 
+import logging
 import os
 import tempfile
 import time
 
 # Logging
-log = get_logger('client')
+log = logging.getLogger('client')
 
 
 class Client(object):

@@ -6,13 +6,12 @@ from parcel import (
     defaults,
     manifest,
     version_string)
-from parcel.log import get_logger
 
 import argparse
 import logging
 
 logging.root.setLevel(logging.INFO)
-log = get_logger('parcel_client')
+log = logging.getLogger('parcel_client')
 
 
 def get_client(args, token, **_kwargs):

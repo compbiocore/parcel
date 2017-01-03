@@ -1,10 +1,10 @@
+import logging
 import os
 from ctypes import cdll, c_void_p, c_int
-from log import get_logger
 from utils import STRIP
 
 # Logging
-log = get_logger('client')
+log = logging.getLogger('client')
 PACKAGE_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'src')
 
 # Load library

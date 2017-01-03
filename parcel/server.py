@@ -1,12 +1,12 @@
 # import signal
 import urlparse
 from cparcel import lib
+import logging
 import time
 
-from log import get_logger
 
 # Logging
-log = get_logger('server')
+log = logging.getLogger('server')
 
 
 class Server(object):

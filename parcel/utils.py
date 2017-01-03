@@ -1,8 +1,8 @@
-from .log import get_logger
 
 from contextlib import contextmanager
 from progressbar import ProgressBar, Percentage, Bar, ETA, FileTransferSpeed
 import hashlib
+import logging
 import mmap
 import os
 import requests
@@ -10,7 +10,7 @@ import stat
 import sys
 
 # Logging
-log = get_logger('utils')
+log = logging.getLogger('utils')
 
 # Silence warnings from requests
 try:

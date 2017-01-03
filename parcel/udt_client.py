@@ -1,11 +1,11 @@
 from .client import Client
 from .cparcel import lib
-from .log import get_logger
 
+import logging
 import urlparse
 
 # Logging
-log = get_logger('client')
+log = logging.getLogger('client')
 
 
 class UDTClient(Client):
