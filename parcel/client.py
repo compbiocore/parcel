@@ -97,7 +97,7 @@ class Client(object):
         self.stop_time = time.time()
         if file_size > 0:
             rate = (int(file_size)*8/1e9) / (self.stop_time - self.start_time)
-            log.info(
+            log.debug(
                 'Download complete: {0:.2f} Gbps average'.format(rate))
 
     def validate_file_md5sum(self, stream):
@@ -105,7 +105,7 @@ class Client(object):
             log.debug('checksum validation disabled')
             return
 
-        log.info('Validating checksum...')
+        log.debug('Validating checksum...')
 
         if not stream.is_regular_file:
             raise Exception('Not a regular file')
@@ -133,7 +133,7 @@ class Client(object):
 
         # Log file ids
         for file_id in file_ids:
-            log.info('Given file id: {}'.format(file_id))
+            log.debug('Given file id: {}'.format(file_id))
 
         # Download each file
         downloaded, errors = [], {}
@@ -200,7 +200,7 @@ class Client(object):
 
         # Start stream
         utils.print_opening_header(stream.ID)
-        log.info('Getting file information...')
+        log.debug('Getting file information...')
         stream.init()
 
         # Create segments producer to stream

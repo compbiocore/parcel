@@ -160,7 +160,7 @@ class DownloadStream(object):
             raise ValueError(
                 'Unexpected response from server: missing content length.')
         self.size = long(content_length)
-        self.log.info('Request responded   : {} bytes'.format(self.size))
+        self.log.debug('Request responded   : {} bytes'.format(self.size))
         attachment = r.headers.get('content-disposition', None)
         self.name = (attachment.split('filename=')[-1]
                      if attachment else 'untitled')

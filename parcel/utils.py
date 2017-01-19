@@ -48,13 +48,13 @@ def get_pbar(file_id, maxval, start_val=0):
 
 
 def print_opening_header(file_id):
-    log.info('')
-    log.info('v{}v'.format('{s:{c}^{n}}'.format(
+    log.debug('')
+    log.debug('v{}v'.format('{s:{c}^{n}}'.format(
         s=' {} '.format(file_id), n=50, c='-')))
 
 
 def print_closing_header(file_id):
-    log.info('^{}^'.format('{s:{c}^{n}}'.format(
+    log.debug('^{}^'.format('{s:{c}^{n}}'.format(
         s=' {} '.format(file_id), n=50, c='-')))
 
 
@@ -98,7 +98,7 @@ def remove_partial_extension(path):
             log.warn('No partial extension found')
             log.warn('Got {}'.format(path))
             return
-        log.info('renaming to {}'.format(path.replace('.partial', '')))
+        log.debug('renaming to {}'.format(path.replace('.partial', '')))
         os.rename(path, path.replace('.partial', ''))
     except Exception as e:
         raise Exception('Unable to remove partial extension: {}'.format(str(e)))
